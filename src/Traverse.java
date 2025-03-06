@@ -7,8 +7,8 @@ public class Traverse {
   public static void main(String[] args) {
     // See below site for visualization of this graph
     // https://auberonedu.github.io/graph-explore/graph_site/viz.html
-    Vertex<Integer> v3  = new Vertex<>(3);
-    Vertex<Integer> v7  = new Vertex<>(7);
+    Vertex<Integer> v3 = new Vertex<>(3);
+    Vertex<Integer> v7 = new Vertex<>(7);
     Vertex<Integer> v12 = new Vertex<>(12);
     Vertex<Integer> v34 = new Vertex<>(34);
     Vertex<Integer> v56 = new Vertex<>(56);
@@ -18,16 +18,52 @@ public class Traverse {
     Vertex<Integer> v23 = new Vertex<>(23);
     Vertex<Integer> v67 = new Vertex<>(67);
 
-    v3.neighbors  = new ArrayList<>(List.of(v7, v34));
-    v7.neighbors  = new ArrayList<>(List.of(v12, v45, v34, v56));
+    v3.neighbors = new ArrayList<>(List.of(v7, v34));
+    v7.neighbors = new ArrayList<>(List.of(v12, v45, v34, v56));
     v12.neighbors = new ArrayList<>(List.of(v7, v56, v78));
-    v34.neighbors = new ArrayList<>(List.of(v34, v91)); 
+    v34.neighbors = new ArrayList<>(List.of(v34, v91));
     v56.neighbors = new ArrayList<>(List.of(v78));
     v78.neighbors = new ArrayList<>(List.of(v91));
     v91.neighbors = new ArrayList<>(List.of(v56));
     v45.neighbors = new ArrayList<>(List.of(v23));
     v23.neighbors = new ArrayList<>(List.of());
     v67.neighbors = new ArrayList<>(List.of(v91));
+
+    System.out.println("DFS search of Graph starting from 3:");
+    Set<Vertex<Integer>> visited = new HashSet<>();
+    dfs(v3, visited);
+
+    System.out.println();
+    System.out.println("DFS search of Graph starting from 67:");
+    dfs(v67);
+
+  }
+
+  // Overloaded method to create a new Hash Set locally and call the original 
+  // method by passing in the vertex and new Hash Set.
+  public static <T> void dfs(Vertex<T> vertex) {
+    // Older and longer segment:
+    // var visited = new HashSet<Vertex<T>>();
+    // dfs(vertex, visited);
+
+    // Shorter version with direct initialization:
+    dfs(vertex, new HashSet<Vertex<T>>());
+  }
+
+  private static <T> void dfs(Vertex<T> vertex, Set<Vertex<T>> visited) {
+    if (vertex == null) return;
+
+    if (visited.contains(vertex)) return;
+
+    visited.add(vertex);
+
+    System.out.println(vertex.data);
+
+    if (vertex.neighbors == null) return;
+    
+    for (var neighbor : vertex.neighbors) {
+      dfs(neighbor, visited);
+    }
   }
 
 }
